@@ -1,28 +1,33 @@
 import './App.css';
 
+import {useState, useEffect} from "react";
+
+
+
 function App() {
+  const [datas,setDatas] = useState([]);
+
+  const loadData = async()=>{
+    
+    try {
+      const response = await fetch("http://localhost:5000/api/user");
+    const data = await response.json();
+   
+    setDatas(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-      <div><h1>hello</h1></div>
+    <div>
+      {datas.map((val) => {
+        return <div>{val.name}</div>;
+      })}
     </div>
   );
 }
